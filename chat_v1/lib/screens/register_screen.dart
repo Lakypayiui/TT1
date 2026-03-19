@@ -1,4 +1,8 @@
+import 'package:chat_v1/widgets/custom_choice_chip.dart';
+import 'package:chat_v1/widgets/custom_stroked_text.dart';
+import 'package:chat_v1/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../widgets/custom_orange_button.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -39,89 +43,78 @@ class _RegisterScreenState extends State<RegisterScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 20),
-              const Text(
-                "REGISTRO",
+              CustomStrokedText(
+                text: "REGISTRO",
+                fontSize: 70,              // puedes bajarlo a 60–65 si se ve muy grande
+                strokeColor: const Color(0xFFFF9500),
+                strokeWidth: 18,           // 16–22 suele verse bien con Lilita One
+                fillColor: Colors.white,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFFFF9500),
-                ),
               ),
               const SizedBox(height: 40),
-
-              TextFormField(
+              CustomTextFormField(
                 controller: _nameCtrl,
-                decoration: const InputDecoration(
-                  labelText: "NOMBRE COMPLETO",
-                  hintText: "Tu nombre aquí",
-                  border: OutlineInputBorder(),
-                ),
+                labelText: "Nombre completo",
+                hintText: "Tu nombre aquí",
                 textCapitalization: TextCapitalization.words,
                 validator: (v) => v?.trim().isEmpty ?? true ? "Campo requerido" : null,
               ),
               const SizedBox(height: 20),
 
-              TextFormField(
+              CustomTextFormField(
                 controller: _emailCtrl,
-                decoration: const InputDecoration(
-                  labelText: "CORREO ELECTRÓNICO",
-                  hintText: "ejemplo@email.com",
-                  border: OutlineInputBorder(),
-                ),
+                labelText: "Correo electrónico",
+                hintText: "ejemplo@email.com",
                 keyboardType: TextInputType.emailAddress,
                 validator: (v) {
                   if (v == null || v.isEmpty) return "Campo requerido";
-                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(v)) {
-                    return "Correo inválido";
-                  }
+                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(v)) return "Correo inválido";
                   return null;
                 },
               ),
               const SizedBox(height: 20),
 
-              const Text("GRADO", style: TextStyle(fontWeight: FontWeight.w600)),
+              Text(
+                "GRADO", 
+                style: GoogleFonts.lilitaOne(
+                  fontWeight: FontWeight.normal,
+                  color: const Color(0xFF715822),
+                  fontSize: 14,
+                  letterSpacing: 1.4,
+                ),
+              ),
               const SizedBox(height: 8),
-              Wrap(
-                spacing: 12,
+              Row(
                 children: ["1°", "2°", "3°"].map((grado) {
-                  return ChoiceChip(
-                    label: Text(grado),
-                    selected: _selectedGrade == grado,
-                    selectedColor: const Color(0xFFFF9500),
-                    backgroundColor: Colors.grey.shade200,
-                    labelStyle: TextStyle(
-                      color: _selectedGrade == grado ? Colors.white : Colors.black87,
+                  return Expanded(
+                    child: CustomChoiceChip(
+                      text: grado,
+                      isSelected: _selectedGrade == grado,
+                      onTap: () {
+                        setState(() => _selectedGrade =
+                            _selectedGrade == grado ? null : grado);
+                      },
                     ),
-                    onSelected: (selected) {
-                      setState(() => _selectedGrade = selected ? grado : null);
-                    },
                   );
                 }).toList(),
               ),
               const SizedBox(height: 24),
 
-              TextFormField(
+              CustomTextFormField(
                 controller: _passCtrl,
+                labelText: "Contraseña",
                 obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: "CONTRASEÑA",
-                  border: OutlineInputBorder(),
-                ),
                 validator: (v) => (v?.length ?? 0) < 6 ? "Mínimo 6 caracteres" : null,
               ),
               const SizedBox(height: 20),
 
-              TextFormField(
+              CustomTextFormField(
                 controller: _confirmCtrl,
+                labelText: "Confirmar",
                 obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: "CONFIRMAR",
-                  border: OutlineInputBorder(),
-                ),
                 validator: (v) {
                   if (v == null || v.isEmpty) return "Campo requerido";
-                  if (!_passwordsMatch) return "Las contraseñas no coinciden";
+                  if (v != _passCtrl.text) return "Las contraseñas no coinciden";
                   return null;
                 },
               ),
