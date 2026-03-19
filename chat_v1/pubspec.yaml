@@ -26,3 +26,4 @@ flutter:
   assets:
    - assets/models/qwen306.gguf
    - assets/animations/typing.json
+   - assets/images/cheetah.png

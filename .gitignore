@@ -54,6 +54,8 @@ assets/models/
 # Model folders
 models/
 assets/models/
+assets/images/
+images/
 
 # Optional other AI formats
 *.bin
