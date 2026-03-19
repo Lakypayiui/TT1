@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => LlmProvider(),
       child: MaterialApp(
-        title: 'Mini Chat LLM',
+        title: 'Chat LLM',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
