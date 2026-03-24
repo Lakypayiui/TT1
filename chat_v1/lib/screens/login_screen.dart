@@ -1,4 +1,10 @@
+import 'package:chat_v1/screens/home_screen.dart';
+import 'package:chat_v1/screens/register_screen.dart';
+import 'package:chat_v1/widgets/custom_stroked_text.dart';
+import 'package:chat_v1/widgets/custom_text_form_field.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../widgets/custom_orange_button.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -33,24 +39,20 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 60),
-              const Text(
-                "INICIA SESIÓN",
+              CustomStrokedText(
+                text:"INICIA SESIÓN",
+                fontSize: 70,
+                strokeColor: const Color(0xFFFF9500),
+                strokeWidth: 18, 
+                fillColor: Colors.white,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFFFF9500),
-                ),
               ),
               const SizedBox(height: 60),
 
-              TextFormField(
+              CustomTextFormField(
                 controller: _emailCtrl,
-                decoration: const InputDecoration(
-                  labelText: "CORREO ELECTRÓNICO",
-                  hintText: "ejemplo@email.com",
-                  border: OutlineInputBorder(),
-                ),
+                labelText: "CORREO ELECTRÓNICO",
+                hintText: "ejemplo@email.com",
                 validator: (v) {
                   if (v?.isEmpty ?? true) return "Campo requerido";
                   if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(v!)) {
@@ -61,25 +63,26 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 24),
 
-              TextFormField(
+              CustomTextFormField(
                 controller: _passCtrl,
+                labelText: "CONTRASEÑA",
                 obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: "CONTRASEÑA",
-                  border: OutlineInputBorder(),
-                ),
                 validator: (v) => v?.isEmpty ?? true ? "Campo requerido" : null,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 24),
+
               Align(
-                alignment: Alignment.centerRight,
+                alignment: Alignment.center,
                 child: TextButton(
                   onPressed: () {
                     // TODO: pantalla de recuperar contraseña
                   },
-                  child: const Text(
+                  child: Text(
                     "¿Olvidaste tu contraseña?",
-                    style: TextStyle(color: Color(0xFFFF9500)),
+                    style: GoogleFonts.lilitaOne(
+                      color: Color(0xFFFF9500),
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),
@@ -93,19 +96,51 @@ class _LoginScreenState extends State<LoginScreen> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Login simulado exitoso")),
                     );
-                    // Aquí iría navegación a home
+                    
                   }
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const HomeScreen()),
+                    );
                 },
               ),
 
               const SizedBox(height: 24),
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text(
-                  "¿No tienes cuenta? Regístrate",
-                  style: TextStyle(color: Color(0xFFFF9500)),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "¿No tienes cuenta? ",
+                    style: GoogleFonts.lilitaOne(
+                      fontSize: 20,
+                      color: Color(0xFF715822), // café
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const RegisterScreen(),
+                        ),
+                      );
+                    },
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero, // quita espacio extra
+                      minimumSize: Size(0, 0),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    child: Text(
+                      "Regístrate",
+                      style: GoogleFonts.lilitaOne(
+                        fontSize: 20,
+                        color: Color(0xFFFF9500), // naranja
+                      ),
+                    ),
+                  ),
+                ],
               ),
+              
               const SizedBox(height: 60),
             ],
           ),

@@ -1,6 +1,5 @@
 import 'package:chat_v1/widgets/custom_stroked_text.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'register_screen.dart';
 import 'login_screen.dart';
 import '../widgets/custom_orange_button.dart';

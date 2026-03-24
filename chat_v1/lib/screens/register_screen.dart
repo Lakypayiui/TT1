@@ -1,3 +1,4 @@
+import 'package:chat_v1/screens/login_screen.dart';
 import 'package:chat_v1/widgets/custom_choice_chip.dart';
 import 'package:chat_v1/widgets/custom_stroked_text.dart';
 import 'package:chat_v1/widgets/custom_text_form_field.dart';
@@ -45,9 +46,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: 20),
               CustomStrokedText(
                 text: "REGISTRO",
-                fontSize: 70,              // puedes bajarlo a 60–65 si se ve muy grande
+                fontSize: 70,
                 strokeColor: const Color(0xFFFF9500),
-                strokeWidth: 18,           // 16–22 suele verse bien con Lilita One
+                strokeWidth: 18, 
                 fillColor: Colors.white,
                 textAlign: TextAlign.center,
               ),
@@ -148,12 +149,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
 
               const SizedBox(height: 24),
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text(
-                  "¿Ya tienes cuenta? Inicia sesión",
-                  style: TextStyle(color: Color(0xFFFF9500)),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "¿Ya tienes cuenta? ",
+                    style: GoogleFonts.lilitaOne(
+                      fontSize: 20,
+                      color: Color(0xFF715822), // café
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const LoginScreen(),
+                        ),
+                      );
+                    },
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: Size(0, 0),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    child: Text(
+                      "Inicia sesión",
+                      style: GoogleFonts.lilitaOne(
+                        fontSize: 20,
+                        color: Color(0xFFFF9500), // naranja
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 40),
             ],
