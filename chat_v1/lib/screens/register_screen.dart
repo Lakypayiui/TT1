@@ -1,4 +1,5 @@
 import 'package:chat_v1/data/database_helper.dart';
+import 'package:chat_v1/models/student.dart';
 import 'package:chat_v1/screens/login_screen.dart';
 import 'package:chat_v1/widgets/custom_back_button.dart';
 import 'package:chat_v1/widgets/custom_choice_chip.dart';
@@ -6,7 +7,7 @@ import 'package:chat_v1/widgets/custom_stroked_text.dart';
 import 'package:chat_v1/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../widgets/custom_orange_button.dart';
+import '../widgets/primary_button.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -143,16 +144,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
               const SizedBox(height: 40),
 
-              CustomOrangeButton(
+              PrimaryButton(
                 text: "REGISTRARSE",
                 onPressed: () async {
                   if (_formKey.currentState!.validate() && _selectedGrade != null) {
 
                     await DatabaseHelper.instance.insertStudent(
-                      name: _nameCtrl.text.trim(),
-                      email: _emailCtrl.text.trim(),
-                      password: _passCtrl.text,
-                      grade: _selectedGrade!,
+                      Student(
+                        name: _nameCtrl.text.trim(),
+                        email: _emailCtrl.text.trim(),
+                        password: _passCtrl.text,
+                        grade: _selectedGrade!,
+                      ),
                     );
 
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -166,6 +169,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     );
                   }
                 },
+                fontSize: width * 0.09,
+                width: width * 0.87,
+                height: height * 0.12,
               ),
 
               const SizedBox(height: 24),

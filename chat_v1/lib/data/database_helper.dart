@@ -1,3 +1,4 @@
+import 'package:chat_v1/models/student.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -36,23 +37,12 @@ class DatabaseHelper {
     ''');
   }
 
-  Future<int> insertStudent({
-    required String name,
-    required String email,
-    required String password,
-    required String grade,
-  }) async {
+  Future<int> insertStudent(Student student) async {
     final db = await instance.database;
-
-    return await db.insert('students', {
-      'name': name,
-      'email': email,
-      'password': password,
-      'grade': grade,
-    });
+    return await db.insert('students', student.toMap());
   }
 
-  Future<Map<String, dynamic>?> getStudentByEmail(String email) async {
+  Future<Student?> getStudentByEmail(String email) async {
     final db = await instance.database;
 
     final result = await db.query(
@@ -61,16 +51,35 @@ class DatabaseHelper {
       whereArgs: [email],
     );
 
-    if (result.isNotEmpty) return result.first;
+    if (result.isNotEmpty) {
+      return Student.fromMap(result.first);
+    }
+
+    return null;
+  }
+
+  Future<Student?> getStudentById(int id) async {
+    final db = await instance.database;
+
+    final result = await db.query(
+      'students',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+
+    if (result.isNotEmpty) {
+      return Student.fromMap(result.first);
+    }
+
     return null;
   }
 
   Future<void> deleteAllTables() async {
-  final db = await instance.database;
+    final db = await instance.database;
 
-  await db.execute('DROP TABLE IF EXISTS students');
+    await db.execute('DROP TABLE IF EXISTS students');
 
-  // Volver a crear la DB
-  await _createDB(db, 1);
-}
+    // Volver a crear la DB
+    await _createDB(db, 1);
+  }
 }

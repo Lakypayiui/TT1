@@ -1,11 +1,43 @@
+import 'package:chat_v1/data/database_helper.dart';
+import 'package:chat_v1/models/student.dart';
+import 'package:chat_v1/services/session_service.dart';
+import 'package:chat_v1/widgets/custom_stroked_text.dart';
+import 'package:chat_v1/widgets/primary_button.dart';
+import 'package:chat_v1/widgets/student_header.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/subject.dart';
 import '../widgets/subject_card.dart';
-// import '../widgets/custom_stroked_text.dart'; // si quieres usarlo en el título
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  Student? student;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadStudent();
+  }
+
+  Future<void> _loadStudent() async {
+    final id = await SessionService.getSession();
+
+    if (id == null) return;
+
+    final s = await DatabaseHelper.instance.getStudentById(id);
+
+    if (!mounted) return;
+
+    setState(() {
+      student = s;
+    });
+  }
 
   // Datos de ejemplo (puedes venir de un provider, firebase, etc.)
   static final List<Subject> subjects = [
@@ -43,150 +75,62 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final height = size.height;
+    final width = size.width;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF8E1),
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Tarjeta de perfil superior
-              Container(
-                margin: const EdgeInsets.all(16),
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFFFFA726), Color(0xFFFF6D00)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(24),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.orange.withOpacity(0.3),
-                      blurRadius: 12,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        // Avatar
-                        Container(
-                          width: 80,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white, width: 4),
-                          ),
-                          child: const CircleAvatar(
-                            backgroundColor: Color(0xFFBBDEFB),
-                            radius: 36,
-                            child: Text(
-                              "👾",
-                              style: TextStyle(fontSize: 48),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
+              student == null
+                ? const Center(child: CircularProgressIndicator())
+                : StudentHeader(student: student!),
 
-                        // Info
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "JUAN PÉREZ",
-                                style: GoogleFonts.lilitaOne(
-                                  fontSize: 28,
-                                  color: Colors.white,
-                                  letterSpacing: 1.0,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                "2° Grado",
-                                style: GoogleFonts.inter(
-                                  fontSize: 18,
-                                  color: Colors.white.withOpacity(0.95),
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Botones AVATAR / VER PERFIL
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _smallButton("AVATAR"),
-                        const SizedBox(width: 12),
-                        _smallButton("VER PERFIL"),
-                      ],
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    // Estadísticas
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _statItem("🔥", "7 DÍAS"),
-                        const SizedBox(width: 32),
-                        _statItem("\$", "1500"),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+              SizedBox(height: height * 0.03),
 
               // Botón TIENDA
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    // TODO: navegar a tienda
-                  },
-                  icon: const Icon(Icons.store_rounded, size: 28),
-                  label: Text(
-                    "TIENDA",
-                    style: GoogleFonts.lilitaOne(fontSize: 22),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF42A5F5),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    elevation: 6,
-                  ),
-                ),
+              PrimaryButton(
+                  text: "TIENDA",
+                  icon: Icons.store,
+                  onPressed: () {},
+                  fontSize: width * 0.08,
+                  width: width * 0.9,
+                  height: height * 0.11,
+                  backgroundColor: const Color(0xFF00CCFE),
+                  borderColor: const Color(0xFF098AA9),
               ),
 
-              const SizedBox(height: 24),
+              SizedBox(height: height * 0.03),
+
+              Divider(
+                color: Color(0xFFFFDEA1),
+                thickness: 6,
+                indent: width * 0.05,
+                endIndent: width * 0.05,
+              ),
+
+              SizedBox(height: height * 0.04),
 
               // Sección Mis Materias
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Text(
-                  "MIS MATERIAS",
-                  style: GoogleFonts.lilitaOne(
-                    fontSize: 28,
-                    color: const Color(0xFFFF6D00),
-                    letterSpacing: 1.2,
-                  ),
-                ),
+              Row(
+                children: [
+                  SizedBox(width: width * 0.05),
+                  CustomStrokedText(
+                    text: "MIS MATERIAS",
+                    fontSize: width * 0.08,
+                    strokeColor: const Color(0xFFFF9500),
+                    strokeWidth: width * 0.025,
+                    fillColor: Colors.white,
+                  )
+                ],
               ),
 
-              const SizedBox(height: 12),
+              SizedBox(height: height * 0.03),
 
               // Lista de materias clickeables
               Padding(
@@ -215,39 +159,4 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _smallButton(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.25),
-        borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: Colors.white, width: 1.5),
-      ),
-      child: Text(
-        text,
-        style: GoogleFonts.inter(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 14,
-        ),
-      ),
-    );
-  }
-
-  Widget _statItem(String emoji, String value) {
-    return Row(
-      children: [
-        Text(emoji, style: const TextStyle(fontSize: 24)),
-        const SizedBox(width: 6),
-        Text(
-          value,
-          style: GoogleFonts.inter(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
-    );
-  }
 }

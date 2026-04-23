@@ -1,12 +1,13 @@
+import 'package:chat_v1/data/database_helper.dart';
 import 'package:chat_v1/screens/home_screen.dart';
 import 'package:chat_v1/screens/register_screen.dart';
+import 'package:chat_v1/services/session_service.dart';
 import 'package:chat_v1/widgets/custom_back_button.dart';
 import 'package:chat_v1/widgets/custom_stroked_text.dart';
 import 'package:chat_v1/widgets/custom_text_form_field.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../widgets/custom_orange_button.dart';
+import '../widgets/primary_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -98,19 +99,43 @@ class _LoginScreenState extends State<LoginScreen> {
 
               SizedBox(height: height * 0.02),
 
-              CustomOrangeButton(
+              PrimaryButton(
                 text: "INICIAR SESIÓN",
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
+
+                    final student = await DatabaseHelper.instance
+                        .getStudentByEmail(_emailCtrl.text.trim());
+
+                    if (!mounted) return;
+
+                    if (student == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Usuario no encontrado")),
+                      );
+                      return;
+                    }
+
+                    if (student.password != _passCtrl.text) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Contraseña incorrecta")),
+                      );
+                      return;
+                    }
+
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Login simulado exitoso")),
+                      SnackBar(content: Text("Bienvenido ${student.name}")),
                     );
-                    
-                  }
-                  Navigator.push(
+
+                    await SessionService.saveSession(student.id!);
+
+                    if (!mounted) return;
+
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (_) => const HomeScreen()),
                     );
+                  }
                 },
                 fontSize: width * 0.09,
                 width: width * 0.87,

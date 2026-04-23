@@ -1,3 +1,4 @@
+import 'package:chat_v1/data/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'screens/welcome_screen.dart';
@@ -8,6 +9,9 @@ void main() async  {
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
+
+  await DatabaseHelper.instance.database;
+
   runApp(const MyApp());
 }
 
