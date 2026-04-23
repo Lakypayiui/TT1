@@ -8,6 +8,8 @@ class PrimaryButton extends StatefulWidget {
   final double fontSize;
   final double? width;
   final double? height;
+  final double borderWidth;
+  final double borderBottomWidth;
   final EdgeInsetsGeometry padding;
 
   final IconData? icon;
@@ -30,6 +32,8 @@ class PrimaryButton extends StatefulWidget {
     this.textColor = Colors.white,
     this.icon,
     this.iconSpacing = 8,
+    this.borderWidth = 6,
+    this.borderBottomWidth = 12,
   });
 
   @override
@@ -44,12 +48,12 @@ class _PrimaryButtonState extends State<PrimaryButton> {
   Widget build(BuildContext context) {
     double offsetY = 0;
     if (_isPressed) {
-      offsetY = 10;
+      offsetY = widget.borderBottomWidth;
     } else if (_isHover) {
       offsetY = -2;
     }
 
-    double bottomBorder = _isPressed ? 1 : 12;
+    double bottomBorder = _isPressed ? 1 : widget.borderBottomWidth;
 
     return GestureDetector(
       onTapDown: (_) => setState(() {
@@ -94,9 +98,9 @@ class _PrimaryButtonState extends State<PrimaryButton> {
               : widget.backgroundColor,
           borderRadius: BorderRadius.circular(25),
           border: Border(
-            top: BorderSide(color: widget.borderColor, width: 6),
-            left: BorderSide(color: widget.borderColor, width: 6),
-            right: BorderSide(color: widget.borderColor, width: 6),
+            top: BorderSide(color: widget.borderColor, width: widget.borderWidth),
+            left: BorderSide(color: widget.borderColor, width: widget.borderWidth),
+            right: BorderSide(color: widget.borderColor, width: widget.borderWidth),
             bottom: BorderSide(color: widget.borderColor, width: bottomBorder),
           ),
         ),
