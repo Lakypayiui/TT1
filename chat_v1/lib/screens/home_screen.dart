@@ -42,32 +42,37 @@ class _HomeScreenState extends State<HomeScreen> {
   // Datos de ejemplo (puedes venir de un provider, firebase, etc.)
   static final List<Subject> subjects = [
     Subject(
+      id: 1,
       name: "Matemáticas",
-      progress: 0.85,
+      gradeId: 1,
       icon: Icons.calculate_rounded,
       barColor: const Color(0xFFFF9500),
     ),
     Subject(
+      id: 2,
       name: "Español",
-      progress: 0.62,
+      gradeId: 1,
       icon: Icons.book_rounded,
       barColor: const Color(0xFFFFA726),
     ),
     Subject(
+      id: 3,
       name: "Ciencias",
-      progress: 0.45,
+      gradeId: 1,
       icon: Icons.science_rounded,
       barColor: const Color(0xFFFFB74D),
     ),
     Subject(
+      id: 4,
       name: "Historia",
-      progress: 0.78,
+      gradeId: 1,
       icon: Icons.history_edu_rounded,
       barColor: const Color(0xFFFF9800),
     ),
     Subject(
+      id: 5,
       name: "Geografía",
-      progress: 0.33,
+      gradeId: 1,
       icon: Icons.public_rounded,
       barColor: const Color(0xFFFFB300),
     ),
@@ -139,6 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: subjects
                       .map((subject) => SubjectCard(
                             subject: subject,
+                            progress: 0.7, // 👈 valor de ejemplo, puede venir de un provider
                             onTap: () {
                               // Acción al tocar la materia
                               ScaffoldMessenger.of(context).showSnackBar(

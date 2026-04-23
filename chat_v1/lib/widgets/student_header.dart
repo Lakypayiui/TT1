@@ -91,7 +91,7 @@ class StudentHeader extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          "${student.grade} Grado",
+                          "${student.grade?.number ?? 'Grado no disponible'}° grado",
                           style: GoogleFonts.inter(
                             fontSize: 18,
                             color: const Color(0xFF715822),

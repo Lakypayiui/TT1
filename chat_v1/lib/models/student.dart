@@ -1,43 +1,62 @@
+import 'grade.dart';
+
 class Student {
   final int? id;
   final String name;
   final String email;
   final String password;
-  final String grade;
+
+  final int gradeId;
+  final Grade? grade; // 👈 nuevo objeto
+
+  final bool active;
+  final bool blocked;
+  final int coins;
 
   Student({
     this.id,
     required this.name,
     required this.email,
     required this.password,
-    required this.grade,
+    required this.gradeId,
+    this.grade, // 👈 opcional
+    this.active = true,
+    this.blocked = false,
+    this.coins = 0,
   });
 
-  // Convertir de Map (SQLite → objeto)
   factory Student.fromMap(Map<String, dynamic> map) {
     return Student(
-      id: map['id'],
-      name: map['name'],
-      email: map['email'],
-      password: map['password'],
-      grade: map['grade'],
+      id: map['id_estudiante'],
+      name: map['nombre'],
+      email: map['correo'],
+      password: map['contrasena'],
+      gradeId: map['id_grado'],
+
+      // si haces JOIN en el futuro puedes llenar esto
+      grade: map['grado'] != null ? Grade.fromMap(map['grado']) : null,
+
+      active: map['activo'] == 1,
+      blocked: map['bloqueado'] == 1,
+      coins: map['monedas'],
     );
   }
 
-  // Convertir a Map (objeto → SQLite)
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
-      'name': name,
-      'email': email,
-      'password': password,
-      'grade': grade,
+      'id_estudiante': id,
+      'nombre': name,
+      'correo': email,
+      'contrasena': password,
+      'id_grado': gradeId,
+      'activo': active ? 1 : 0,
+      'bloqueado': blocked ? 1 : 0,
+      'monedas': coins,
     };
   }
 
-  // Para debug
   @override
   String toString() {
-    return 'Student(id: $id, name: $name, email: $email, grade: $grade)';
+    return 'Student(id: $id, name: $name, gradeId: $gradeId, coins: $coins)';
   }
 }

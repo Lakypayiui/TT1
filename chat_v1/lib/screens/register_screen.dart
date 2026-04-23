@@ -149,12 +149,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 onPressed: () async {
                   if (_formKey.currentState!.validate() && _selectedGrade != null) {
 
+                    final gradeNumber = int.parse(_selectedGrade!.replaceAll("°", ""));
+
+                    final gradeId = await DatabaseHelper.instance.getGradeIdByNumber(gradeNumber);
+
                     await DatabaseHelper.instance.insertStudent(
                       Student(
                         name: _nameCtrl.text.trim(),
                         email: _emailCtrl.text.trim(),
                         password: _passCtrl.text,
-                        grade: _selectedGrade!,
+                        gradeId: gradeId,
                       ),
                     );
 

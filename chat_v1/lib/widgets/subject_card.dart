@@ -4,16 +4,20 @@ import '../models/subject.dart';
 
 class SubjectCard extends StatelessWidget {
   final Subject subject;
+  final double progress; // 👈 nuevo parámetro
   final VoidCallback onTap;
 
   const SubjectCard({
     super.key,
     required this.subject,
+    required this.progress,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    final percentage = (progress * 100).toInt();
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -33,7 +37,7 @@ class SubjectCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            // Ícono de la materia
+            // Icono
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
@@ -46,9 +50,10 @@ class SubjectCard extends StatelessWidget {
                 color: const Color(0xFFFF9500),
               ),
             ),
+
             const SizedBox(width: 16),
 
-            // Nombre y barra de progreso
+            // Info
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,23 +66,29 @@ class SubjectCard extends StatelessWidget {
                       letterSpacing: 1.2,
                     ),
                   ),
+
                   const SizedBox(height: 8),
+
                   Row(
                     children: [
                       Expanded(
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: LinearProgressIndicator(
-                            value: subject.progress,
+                            value: progress, // 👈 ahora externo
                             minHeight: 12,
                             backgroundColor: const Color(0xFFFFE8C3),
-                            valueColor: AlwaysStoppedAnimation<Color>(subject.barColor),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              subject.barColor,
+                            ),
                           ),
                         ),
                       ),
+
                       const SizedBox(width: 12),
+
                       Text(
-                        "${subject.percentage}%",
+                        "$percentage%",
                         style: GoogleFonts.inter(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -90,7 +101,6 @@ class SubjectCard extends StatelessWidget {
               ),
             ),
 
-            // Flecha indicadora de que es clickeable
             const Icon(
               Icons.chevron_right_rounded,
               color: Color(0xFFFF9500),

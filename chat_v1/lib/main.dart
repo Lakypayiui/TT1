@@ -10,6 +10,7 @@ void main() async  {
     DeviceOrientation.portraitUp,
   ]);
 
+  await DatabaseHelper.instance.deleteAllTables(); // Elimina todas las tablas para reiniciar la base de datos
   await DatabaseHelper.instance.database;
 
   runApp(const MyApp());
