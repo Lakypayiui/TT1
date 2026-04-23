@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:llamadart/llamadart.dart';
 import 'dart:io';
+
 class LlmProvider extends ChangeNotifier {
   LlamaEngine? _engine;
   List<Map<String, String>> messages = [];
@@ -10,15 +11,16 @@ class LlmProvider extends ChangeNotifier {
   String status = 'Cargando modelo...';
 
   Future<String> _copyModelFromAssets() async {
-  final data = await rootBundle.load('assets/models/qwen306.gguf');
+    final data = await rootBundle.load('assets/models/qwen306.gguf');
 
-  final dir = await getApplicationDocumentsDirectory();
-  final file = File('${dir.path}/qwen306.gguf');
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File('${dir.path}/qwen306.gguf');
 
-  await file.writeAsBytes(data.buffer.asUint8List());
+    await file.writeAsBytes(data.buffer.asUint8List());
 
-  return file.path;
-}
+    return file.path;
+  }
+  
   Future<void> loadModel() async {
   try {
     status = 'Inicializando modelo...';

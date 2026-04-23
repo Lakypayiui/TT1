@@ -1,5 +1,6 @@
 import 'package:chat_v1/data/database_helper.dart';
 import 'package:chat_v1/models/student.dart';
+import 'package:chat_v1/screens/chat_screen.dart';
 import 'package:chat_v1/services/session_service.dart';
 import 'package:chat_v1/widgets/custom_stroked_text.dart';
 import 'package:chat_v1/widgets/primary_button.dart';
@@ -102,7 +103,9 @@ class _HomeScreenState extends State<HomeScreen> {
               PrimaryButton(
                   text: "TIENDA",
                   icon: Icons.store,
-                  onPressed: () {},
+                  onPressed: () {
+                     
+                  },
                   fontSize: width * 0.08,
                   width: width * 0.9,
                   height: height * 0.11,
@@ -149,6 +152,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               // Acción al tocar la materia
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text("Abriendo ${subject.name}")),
+                              );
+
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (_) => const ChatScreen()),
                               );
                               // Aquí iría Navigator.push a la pantalla de la materia
                             },
