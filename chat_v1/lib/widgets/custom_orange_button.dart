@@ -17,7 +17,7 @@ class CustomOrangeButton extends StatefulWidget {
     this.fontSize = 24,
     this.width,
     this.height,
-    this.padding = const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+    this.padding = const EdgeInsets.symmetric(horizontal: 32, vertical: 4),
   });
 
   @override
@@ -34,7 +34,6 @@ class _CustomOrangeButtonState extends State<CustomOrangeButton> {
     final borderColor = const Color(0xFFB87A00);
     final textColor = Colors.white;
 
-    // 👇 desplazamiento vertical
     double offsetY = 0;
     if (_isPressed) {
       offsetY = 12; // baja cuando se presiona
@@ -62,7 +61,21 @@ class _CustomOrangeButtonState extends State<CustomOrangeButton> {
       onPanStart: (_) => setState(() => _isHover = true),
       onPanEnd: (_) => setState(() => _isHover = false),
 
-      onTap: widget.onPressed,
+      onTap: () async {
+        setState(() {
+          _isPressed = true;
+        });
+
+        await Future.delayed(const Duration(milliseconds: 120));
+
+        setState(() {
+          _isPressed = false;
+        });
+
+        await Future.delayed(const Duration(milliseconds: 80));
+
+        widget.onPressed();
+      },
 
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 100),
@@ -72,7 +85,7 @@ class _CustomOrangeButtonState extends State<CustomOrangeButton> {
         padding: widget.padding,
         decoration: BoxDecoration(
           color: _isPressed ? bgColor.withOpacity(0.9) : bgColor,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(25),
           border: Border(
             top: BorderSide(color: borderColor, width: 6),
             left: BorderSide(color: borderColor, width: 6),
@@ -90,6 +103,7 @@ class _CustomOrangeButtonState extends State<CustomOrangeButton> {
             color: textColor,
             fontSize: widget.fontSize,
             letterSpacing: 2.5,
+            height: 1.1,
           ),
         ),
       ),
