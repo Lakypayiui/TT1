@@ -35,6 +35,7 @@ class CustomStrokedText extends StatelessWidget {
           maxLines: maxLines,
           overflow: overflow,
           style: GoogleFonts.lilitaOne(
+            height: 1,
             fontSize: fontSize,
             foreground: Paint()
               ..style = PaintingStyle.stroke
@@ -51,6 +52,7 @@ class CustomStrokedText extends StatelessWidget {
           style: GoogleFonts.lilitaOne(
             fontSize: fontSize,
             color: fillColor,
+            height: 1,
           ),
         ),
       ],

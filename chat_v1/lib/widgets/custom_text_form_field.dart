@@ -1,7 +1,8 @@
+import 'package:chat_v1/widgets/toggle_visibility_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CustomTextFormField extends StatelessWidget {
+class CustomTextFormField extends StatefulWidget {
   final TextEditingController? controller;
   final String labelText;
   final String? hintText;
@@ -28,13 +29,27 @@ class CustomTextFormField extends StatelessWidget {
   });
 
   @override
+  State<CustomTextFormField> createState() => _CustomTextFormFieldState();
+}
+
+class _CustomTextFormFieldState extends State<CustomTextFormField> {
+  late bool _obscure;
+
+  @override
+  void initState() {
+    super.initState();
+    _obscure = widget.obscureText;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final showEye = widget.obscureText;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Etiqueta superior
         Text(
-          labelText.toUpperCase(),
+          widget.labelText.toUpperCase(),
           style: GoogleFonts.lilitaOne(
             fontWeight: FontWeight.normal,
             color: const Color(0xFF715822),
@@ -45,15 +60,14 @@ class CustomTextFormField extends StatelessWidget {
 
         const SizedBox(height: 6),
 
-        // Campo de texto
         TextFormField(
-          controller: controller,
-          focusNode: focusNode,
-          obscureText: obscureText,
-          keyboardType: keyboardType,
-          textCapitalization: textCapitalization,
-          onChanged: onChanged,
-          validator: validator,
+          controller: widget.controller,
+          focusNode: widget.focusNode,
+          obscureText: _obscure,
+          keyboardType: widget.keyboardType,
+          textCapitalization: widget.textCapitalization,
+          onChanged: widget.onChanged,
+          validator: widget.validator,
           style: GoogleFonts.inter(
             fontWeight: FontWeight.bold,
             fontSize: 20,
@@ -61,7 +75,7 @@ class CustomTextFormField extends StatelessWidget {
             color: const Color(0xFF5A3E1B),
           ),
           decoration: InputDecoration(
-            hintText: hintText,
+            hintText: widget.hintText,
             hintStyle: GoogleFonts.inter(
               fontWeight: FontWeight.bold,
               color: const Color(0xFFC9A96B),
@@ -103,7 +117,17 @@ class CustomTextFormField extends StatelessWidget {
                 width: 6,
               ),
             ),
-            suffixIcon: suffixIcon,
+
+            suffixIcon: showEye
+              ? ToggleVisibilityIcon(
+                  isObscured: _obscure,
+                  onChanged: (value) {
+                    setState(() {
+                      _obscure = value;
+                    });
+                  },
+                )
+              : widget.suffixIcon,
           ),
         ),
       ],

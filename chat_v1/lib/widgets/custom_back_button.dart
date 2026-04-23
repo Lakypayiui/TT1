@@ -13,8 +13,8 @@ class CustomBackButton extends StatelessWidget {
     this.onPressed,
     this.backgroundColor = const Color(0xFFFFE5B7),
     this.borderColor = const Color(0xFFFFDEA1),
-    this.iconColor = const Color(0xFFFF9500),
-    this.borderWidth = 2,
+    this.iconColor = const Color(0xFFC2410C),
+    this.borderWidth = 4,
     this.size = 48,
   });
 
@@ -34,7 +34,7 @@ class CustomBackButton extends StatelessWidget {
       child: IconButton(
         padding: EdgeInsets.zero,
         constraints: const BoxConstraints(),
-        icon: Icon(Icons.arrow_back, color: iconColor),
+        icon: Icon(Icons.arrow_back_rounded, color: iconColor, size: 24, weight: 700,),
         onPressed: onPressed ?? () => Navigator.pop(context),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:chat_v1/screens/home_screen.dart';
 import 'package:chat_v1/screens/register_screen.dart';
+import 'package:chat_v1/widgets/custom_back_button.dart';
 import 'package:chat_v1/widgets/custom_stroked_text.dart';
 import 'package:chat_v1/widgets/custom_text_form_field.dart';
 import 'package:flutter/gestures.dart';
@@ -21,14 +22,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final height = size.height;
+    final width = size.width;
+    
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFFFF9500)),
-          onPressed: () => Navigator.pop(context),
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 12),
+          child: CustomBackButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -38,12 +47,12 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 60),
+              SizedBox(height: height * 0.03),
               CustomStrokedText(
                 text:"INICIA SESIÓN",
-                fontSize: 70,
+                fontSize: width * 0.16, // escala con pantalla
                 strokeColor: const Color(0xFFFF9500),
-                strokeWidth: 18, 
+                strokeWidth: width * 0.05, // escala con pantalla
                 fillColor: Colors.white,
                 textAlign: TextAlign.center,
               ),
@@ -61,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   return null;
                 },
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: height * 0.03),
 
               CustomTextFormField(
                 controller: _passCtrl,
@@ -69,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 obscureText: true,
                 validator: (v) => v?.isEmpty ?? true ? "Campo requerido" : null,
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: height * 0.02),
 
               Align(
                 alignment: Alignment.center,
@@ -87,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
 
-              const SizedBox(height: 40),
+              SizedBox(height: height * 0.02),
 
               CustomOrangeButton(
                 text: "INICIAR SESIÓN",
@@ -103,9 +112,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       MaterialPageRoute(builder: (_) => const HomeScreen()),
                     );
                 },
+                fontSize: width * 0.09,
+                width: width * 0.87,
+                height: height * 0.12,
               ),
 
-              const SizedBox(height: 24),
+              SizedBox(height: height * 0.03),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

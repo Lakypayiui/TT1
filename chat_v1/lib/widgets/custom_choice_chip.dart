@@ -52,7 +52,22 @@ class _CustomChoiceChipState extends State<CustomChoiceChip> {
       }),
       onPanStart: (_) => setState(() => _isHover = true),
       onPanEnd: (_) => setState(() => _isHover = false),
-      onTap: widget.onTap,
+      
+      onTap: () async {
+        setState(() {
+          _isPressed = true;
+        });
+
+        await Future.delayed(const Duration(milliseconds: 100));
+
+        setState(() {
+          _isPressed = false;
+        });
+
+        await Future.delayed(const Duration(milliseconds: 80));
+
+        widget.onTap();
+      },
 
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 100),

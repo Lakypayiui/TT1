@@ -24,7 +24,7 @@ class WelcomeScreen extends StatelessWidget {
                 text: "BIENVENIDO",
                 fontSize: width * 0.16, // escala con pantalla
                 strokeColor: const Color(0xFFFF9500),
-                strokeWidth: width * 0.04,
+                strokeWidth: width * 0.05,
                 fillColor: Colors.white,
                 textAlign: TextAlign.center,
               ),
@@ -33,9 +33,7 @@ class WelcomeScreen extends StatelessWidget {
 
               CustomOrangeButton(
                 text: "INICIAR SESIÓN",
-                onPressed: () async {
-                  await Future.delayed(const Duration(milliseconds: 150)); // ajusta el tiempo
-
+                onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => const LoginScreen()),
