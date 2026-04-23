@@ -48,11 +48,9 @@ app.*.map.json
 
 # GGUF models
 *.gguf
-models/
 assets/models/
 
 # Model folders
-models/
 assets/models/
 assets/images/
 images/
